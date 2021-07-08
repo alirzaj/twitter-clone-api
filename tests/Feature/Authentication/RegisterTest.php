@@ -3,8 +3,10 @@
 namespace Tests\Feature\Authentication;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -16,6 +18,8 @@ class RegisterTest extends TestCase
     /** @test */
     public function users_can_register()
     {
+        Event::fake();
+
         $user = [
             'name' => $this->faker->name(),
             'username' => $this->faker->userName(),
@@ -41,6 +45,8 @@ class RegisterTest extends TestCase
                 User::query()->firstWhere('username', $user['username'])->password
             )
         );
+
+        Event::assertDispatched(Registered::class);
     }
     //todo validation test
 }
