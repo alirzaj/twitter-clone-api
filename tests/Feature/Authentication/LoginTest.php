@@ -27,5 +27,10 @@ class LoginTest extends TestCase
             route('login'),
             ['email' => $user->email, 'password' => Str::random()]
         )->assertUnauthorized();
+
+        $this->postJson(
+            route('login'),
+            ['email' => $this->faker->email(), 'password' => $password]
+        )->assertUnauthorized();
     }
 }
