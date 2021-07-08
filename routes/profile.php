@@ -15,6 +15,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::prefix('follow')->name('follow.')->group(function () {
                 //follow another user
                 Route::post('', [FollowController::class, 'store'])->name('store');
+                //unfollow a user
+                Route::delete('', [FollowController::class, 'destroy'])->name('destroy');
             });
 
         });
