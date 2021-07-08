@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\RegisterRequest;
+use App\Http\Resources\Authentication\RegisterResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 
@@ -21,6 +22,6 @@ class RegisterController extends Controller
 
         event(new Registered($user));
 
-        return response()->json(['token' => $user->createToken($request->ip())->plainTextToken]);
+        return new RegisterResource($user);
     }
 }
