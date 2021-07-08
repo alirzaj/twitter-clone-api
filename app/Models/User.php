@@ -21,8 +21,8 @@ class User extends Authenticatable
         'id',
         'email_verified_at',
         'phone_verified_at',
-        'followers',
-        'followings'
+        'followers_count',
+        'followings_count'
     ];
 
     /**

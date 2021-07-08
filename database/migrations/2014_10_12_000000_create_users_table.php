@@ -24,8 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->tinyText('bio')->nullable();
             $table->string('location', 100)->nullable();
-            $table->unsignedBigInteger('followers')->default(0);
-            $table->unsignedBigInteger('followings')->default(0);
+            $table->unsignedBigInteger('followers_count')->default(0);
+            $table->unsignedBigInteger('followings_count')->default(0);
             $table->date('birthday')->nullable();
             $table->string('avatar')->nullable();
             $table->string('wall')->nullable();
