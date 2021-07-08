@@ -27,11 +27,12 @@ class UserFactory extends Factory
             'username' => $this->faker->userName(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'phone' => $this->faker->phoneNumber(),
+            'phone' => Str::remove('+', $this->faker->e164PhoneNumber()),
             'phone_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'bio' => $this->faker->text(200),
             'location' => $this->faker->text(100),
+            'birthday' => $this->faker->date('Y-m-d', now()->subYears(12)),
             'remember_token' => Str::random(10),
         ];
     }
