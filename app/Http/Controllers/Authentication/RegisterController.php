@@ -15,7 +15,7 @@ class RegisterController extends Controller
      * Create a new registered user.
      *
      * @param RegisterRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return RegisterResource
      */
     public function store(RegisterRequest $request)
     {
