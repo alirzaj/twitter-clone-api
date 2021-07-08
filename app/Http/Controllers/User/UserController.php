@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Profile;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateProfileRequest;
 
-class ProfileController extends Controller
+class UserController extends Controller
 {
     public function update(UpdateProfileRequest $request)
     {
