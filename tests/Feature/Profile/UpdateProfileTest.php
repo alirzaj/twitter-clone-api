@@ -19,7 +19,7 @@ class UpdateProfileTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $this->patchJson(route('profile.update'), $attributes = User::factory()->raw())->assertNoContent();
+        $this->patchJson(route('profiles.update'), $attributes = User::factory()->raw())->assertNoContent();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -36,6 +36,6 @@ class UpdateProfileTest extends TestCase
     /** @test */
     public function guests_can_not_update_their_profile()
     {
-        $this->patchJson(route('profile.update'),  User::factory()->raw())->assertUnauthorized();
+        $this->patchJson(route('profiles.update'),  User::factory()->raw())->assertUnauthorized();
     }
 }
