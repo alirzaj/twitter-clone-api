@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
+use App\Events\User\UserFollowed;
+use App\Events\User\UserUnfollowed;
+use App\Listeners\User\IncrementFollowingUserFollowersCount;
+use App\Listeners\User\IncrementFollowerUserFollowingsCount;
+use App\Listeners\User\DecrementUnfollowedUserFollowersCount;
+use App\Listeners\User\DecrementUnfollowerUserFollowingsCount;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +23,15 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        UserFollowed::class => [
+            IncrementFollowerUserFollowingsCount::class,
+            IncrementFollowingUserFollowersCount::class,
+        ],
+        UserUnfollowed::class => [
+            DecrementUnfollowerUserFollowingsCount::class,
+            DecrementUnfollowedUserFollowersCount::class,
+        ]
     ];
 
     /**

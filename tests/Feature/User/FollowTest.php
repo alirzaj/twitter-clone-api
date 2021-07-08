@@ -65,4 +65,21 @@ class FollowTest extends TestCase
         $this->postJson(route('users.follow.store', ['user' => $user->followings->first()->username]))
             ->assertStatus(422);
     }
+
+    /** @test */
+    public function when_users_follow_another_user_their_following_count_and_the_users_followers_count_will_increment()
+    {
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        Sanctum::actingAs($user1);
+
+        $this->postJson(route('users.follow.store', ['user' => $user2->username]))
+            ->assertNoContent();
+
+        $this->assertEquals(1, $user1->fresh()->followings_count);
+        $this->assertEquals(0, $user1->fresh()->followers_count);
+        $this->assertEquals(1, $user2->fresh()->followers_count);
+        $this->assertEquals(0, $user2->fresh()->followings_count);
+    }
 }
