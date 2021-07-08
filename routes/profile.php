@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\Profile\FollowController;
-use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\User\FollowController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 //actions that need authentication
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('users')->name('users.')->group(function () {
         //update the authenticated user's profile
-        Route::patch('', [ProfileController::class, 'update'])->name('update');
+        Route::patch('', [UserController::class, 'update'])->name('update');
         //work with a specific profile
         Route::prefix('{user}')->group(function () {
             //work with follow feature
