@@ -22,6 +22,7 @@ class CreateFollowsTable extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
+            $table->timestamp('followed_at')->useCurrent();
 
             $table->primary(['follower_id', 'following_id']);
         });

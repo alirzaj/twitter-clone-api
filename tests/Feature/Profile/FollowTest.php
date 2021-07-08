@@ -29,6 +29,7 @@ class FollowTest extends TestCase
         $this->assertDatabaseHas('follows', [
             'follower_id' => $user1->id,
             'following_id' => $user2->id,
+            'followed_at' => now()->toDateTimeString()
         ]);
     }
 
@@ -56,7 +57,7 @@ class FollowTest extends TestCase
     public function users_can_not_follow_another_user_twice()
     {
         $user = User::factory()
-            ->has(User::factory(),'followings')
+            ->has(User::factory(), 'followings')
             ->create();
 
         Sanctum::actingAs($user);
