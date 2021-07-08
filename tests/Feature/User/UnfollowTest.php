@@ -16,17 +16,18 @@ class UnfollowTest extends TestCase
     /** @test */
     public function users_can_unfollow_another_user()
     {
-        $user = User::factory()
-            ->has(User::factory(), 'followings')
-            ->create();
+        $user1 = User::factory()
+            ->has(User::factory()->state(['followers_count' => 1]), 'followings')
+            ->create(['followings_count' => 1]);
+        $user2 = $user1->followings->first();
 
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user1);
 
-        $this->deleteJson(route('users.follow.destroy', ['user' => $user->followings->first()->username]))
+        $this->deleteJson(route('users.follow.destroy', ['user' => $user2->username]))
             ->assertNoContent();
 
         $this->assertDatabaseMissing('follows', [
-            'follower_id' => $user->id,
+            'follower_id' => $user1->id,
         ]);
     }
 
