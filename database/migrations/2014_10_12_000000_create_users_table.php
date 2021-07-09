@@ -27,11 +27,6 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('followers_count')->default(0);
             $table->unsignedBigInteger('followings_count')->default(0);
             $table->date('birthday')->nullable();
-            $table->foreignId('pinned_tweet')
-                ->nullable()
-                ->constrained('tweets')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });
