@@ -82,4 +82,98 @@ class FollowTest extends TestCase
         $this->assertEquals(1, $user2->fresh()->followers_count);
         $this->assertEquals(0, $user2->fresh()->followings_count);
     }
+
+    /** @test */
+    public function users_can_see_a_list_of_a_users_foloowers()
+    {
+        //create a user with 16 followers
+        $user1 = User::factory()
+            ->has(User::factory()->state(['followings_count' => 1])->count(16), 'followers')
+            ->create(['followers_count' => 16]);
+
+        //create a user with 1 follower (to assert its not in response) &
+        // 2 following of user1's followers (to assert followed attribute is correct)
+        $user2 = User::factory()
+            ->has(User::factory()->state(['followings_count' => 1]), 'followers')
+            ->create();
+
+        $user2->followings()->attach([$user1->followers[0]->id, $user1->followers[3]->id]);
+
+        //when user2 sees user1 followers
+        Sanctum::actingAs($user2);
+
+        //order is correct & followed attribute works fine
+        $response = $this->getJson(route('users.followers.index', ['user' => $user1->username]))
+            ->assertOk()
+            ->assertJson([
+                'data' => [
+                    [
+                        'name' => $user1->followers[0]->name,
+                        'username' => $user1->followers[0]->username,
+                        'bio' => $user1->followers[0]->bio,
+                        'avatar' => $user1->followers[0]->avatar,
+                        'followed' => true
+                    ],
+                    [
+                        'name' => $user1->followers[1]->name,
+                        'username' => $user1->followers[1]->username,
+                        'bio' => $user1->followers[1]->bio,
+                        'avatar' => $user1->followers[1]->avatar,
+                        'followed' => false
+                    ],
+                    [
+                        'name' => $user1->followers[2]->name,
+                        'username' => $user1->followers[2]->username,
+                        'bio' => $user1->followers[2]->bio,
+                        'avatar' => $user1->followers[2]->avatar,
+                        'followed' => false
+                    ],
+                    [
+                        'name' => $user1->followers[3]->name,
+                        'username' => $user1->followers[3]->username,
+                        'bio' => $user1->followers[3]->bio,
+                        'avatar' => $user1->followers[3]->avatar,
+                        'followed' => true
+                    ],
+                    [
+                        'name' => $user1->followers[4]->name,
+                        'username' => $user1->followers[4]->username,
+                        'bio' => $user1->followers[4]->bio,
+                        'avatar' => $user1->followers[4]->avatar,
+                        'followed' => false
+                    ],
+                ]
+            ])
+            ->decodeResponseJson();
+
+        $this->getJson($response['links']['next'])
+            ->assertOk()
+            ->assertJson([
+                'data' => [
+                    [
+                        'name' => $user1->followers[15]->name,
+                        'username' => $user1->followers[15]->username,
+                        'bio' => $user1->followers[15]->bio,
+                        'avatar' => $user1->followers[15]->avatar,
+                        'followed' => false
+                    ]
+                ]
+            ]);
+    }
+
+    /** @test */
+    public function users_can_not_follow_themselves()
+    {
+        $user1 = User::factory()->create();
+
+        Sanctum::actingAs($user1);
+
+        $this->postJson(route('users.follow.store', ['user' => $user1->username]))
+            ->assertStatus(422);
+
+        $this->assertDatabaseMissing('follows',[
+            'follower_id' => $user1->id,
+            'following_id' => $user1->id,
+        ]);
+    }
 }
