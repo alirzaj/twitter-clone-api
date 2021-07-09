@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -66,6 +67,46 @@ class User extends Authenticatable
             'following_id',
             'id',
             'id'
+        );
+    }
+
+    /**
+     * add a column to query indicating that the given user is
+     * following the current user in row or not
+     *
+     * @param Builder $query
+     * @param User $user
+     * @return Builder
+     */
+    public function scopeWithFollowingState(Builder $query, User $user): Builder
+    {
+        return $query->selectRaw(
+    '(
+                select exists(
+                    select * from follows where following_id = users.id AND follower_id = ?
+                )
+            ) as following',
+            [$user->id]
+        );
+    }
+
+    /**
+     * add a column to query indicating that the current user in row
+     * has followed the given user or not
+     *
+     * @param Builder $query
+     * @param User $user
+     * @return Builder
+     */
+    public function scopeWithFollowState(Builder $query, User $user): Builder
+    {
+        return $query->selectRaw(
+    '(
+                select exists(
+                 select * from follows where following_id = ? AND follower_id = users.id
+                )
+             ) as follows',
+            [$user->id]
         );
     }
 }
