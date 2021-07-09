@@ -16,7 +16,10 @@ class UserRepository
     {
         return User::query()
             ->select(['users.id', 'users.name', 'users.username', 'users.bio', 'users.avatar'])
-           ->withFollowingState(auth()->user())
+            ->with(['media' => function ($query) {
+                $query->where('collection_name', 'avatar');
+            }])
+            ->withFollowingState(auth()->user())
             ->withFollowState(auth()->user())
             ->join('follows', function (JoinClause $join) {
                 $join->on('follows.follower_id', '=', 'users.id');
@@ -33,6 +36,9 @@ class UserRepository
     {
         return User::query()
             ->select(['users.id', 'users.name', 'users.username', 'users.bio', 'users.avatar'])
+            ->with(['media' => function ($query) {
+                $query->where('collection_name', 'avatar');
+            }])
             ->withFollowingState(auth()->user())
             ->withFollowState(auth()->user())
             ->join('follows', function (JoinClause $join) {
