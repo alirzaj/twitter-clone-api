@@ -17,9 +17,10 @@ class FollowController extends Controller
             ->firstOrFail();
 
         abort_if(
-            auth()->user()->followings()->where('id', $following->id)->exists(),
+            auth()->user()->followings()->where('id', $following->id)->exists() ||
+            $following->is(auth()->user()),
             422,
-            'already followed'
+            'already followed or following yourself'
         );
 
         $following->followers()->attach(auth()->user());
