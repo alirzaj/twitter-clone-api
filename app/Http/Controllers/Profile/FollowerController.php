@@ -16,7 +16,11 @@ class FollowerController extends Controller
         $followers = User::query()
             ->select('users.*')
             ->selectRaw(
-                '(select exists( select * from follows where following_id = users.id AND follower_id = ?)) as followed',
+                '(select exists( select * from follows where following_id = users.id AND follower_id = ?)) as following',
+                [auth()->id()]
+            )
+            ->selectRaw(
+                '(select exists( select * from follows where following_id = ? AND follower_id = users.id)) as follows',
                 [auth()->id()]
             )
             ->join('follows', function (JoinClause $join) {

@@ -91,13 +91,15 @@ class FollowTest extends TestCase
             ->has(User::factory()->state(['followings_count' => 1])->count(16), 'followers')
             ->create(['followers_count' => 16]);
 
-        //create a user with 1 follower (to assert its not in response) &
-        // 2 following of user1's followers (to assert followed attribute is correct)
+        //create a user with 1 random follower (to assert its not in response) &
+        // 2 following of user1's followers (to assert following attribute is correct)
+        //& 2 followers of user1's followers to assert follows attribute
         $user2 = User::factory()
             ->has(User::factory()->state(['followings_count' => 1]), 'followers')
-            ->create();
+            ->create(['followers_count' => 3,'followings_count' => 2]);
 
         $user2->followings()->attach([$user1->followers[0]->id, $user1->followers[3]->id]);
+        $user2->followers()->attach([$user1->followers[4]->id, $user1->followers[15]->id]);
 
         //when user2 sees user1 followers
         Sanctum::actingAs($user2);
@@ -112,35 +114,40 @@ class FollowTest extends TestCase
                         'username' => $user1->followers[0]->username,
                         'bio' => $user1->followers[0]->bio,
                         'avatar' => $user1->followers[0]->avatar,
-                        'followed' => true
+                        'following' => true,
+                        'follows' => false,
                     ],
                     [
                         'name' => $user1->followers[1]->name,
                         'username' => $user1->followers[1]->username,
                         'bio' => $user1->followers[1]->bio,
                         'avatar' => $user1->followers[1]->avatar,
-                        'followed' => false
+                        'following' => false,
+                        'follows' => false,
                     ],
                     [
                         'name' => $user1->followers[2]->name,
                         'username' => $user1->followers[2]->username,
                         'bio' => $user1->followers[2]->bio,
                         'avatar' => $user1->followers[2]->avatar,
-                        'followed' => false
+                        'following' => false,
+                        'follows' => false,
                     ],
                     [
                         'name' => $user1->followers[3]->name,
                         'username' => $user1->followers[3]->username,
                         'bio' => $user1->followers[3]->bio,
                         'avatar' => $user1->followers[3]->avatar,
-                        'followed' => true
+                        'following' => true,
+                        'follows' => false,
                     ],
                     [
                         'name' => $user1->followers[4]->name,
                         'username' => $user1->followers[4]->username,
                         'bio' => $user1->followers[4]->bio,
                         'avatar' => $user1->followers[4]->avatar,
-                        'followed' => false
+                        'following' => false,
+                        'follows' => true,
                     ],
                 ]
             ])
@@ -155,7 +162,8 @@ class FollowTest extends TestCase
                         'username' => $user1->followers[15]->username,
                         'bio' => $user1->followers[15]->bio,
                         'avatar' => $user1->followers[15]->avatar,
-                        'followed' => false
+                        'following' => false,
+                        'follows' => true,
                     ]
                 ]
             ]);

@@ -19,7 +19,8 @@ class OtherUserFollowersResource extends JsonResource
             'username' => $this->username,
             'bio' => $this->bio,
             'avatar' => $this->avatar,
-            'followed' => $this->followed
+            'following' => $this->following,
+            'follows' => $this->follows,
         ];
     }
 }
