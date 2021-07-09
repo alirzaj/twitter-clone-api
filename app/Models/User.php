@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,7 +60,7 @@ class User extends Authenticatable implements HasMedia
         $this->addMediaCollection('avatar')
             ->acceptsMimeTypes(['image/jpeg', 'image/png'])
             ->singleFile()
-            ->registerMediaConversions(function (Media $media = null){
+            ->registerMediaConversions(function (Media $media = null) {
                 $this->addMediaConversion('thumb')
                     ->height(48)
                     ->width(48);
@@ -87,6 +89,21 @@ class User extends Authenticatable implements HasMedia
             'id',
             'id'
         );
+    }
+
+    public function tweets(): HasMany
+    {
+        return $this->hasMany(Tweet::class, 'user_id', 'id');
+    }
+
+    public function pinnedTweet(): BelongsTo
+    {
+        return $this->belongsTo(Tweet::class, 'pinned_tweet', 'id');
+    }
+
+    public function retweets(): BelongsToMany
+    {
+        return $this->belongsToMany(Tweet::class, 'retweets');
     }
 
     /**
