@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Profile\UpdateProfileRequest;
+use App\Http\Requests\User\UpdateProfileRequest;
 
 class UserController extends Controller
 {
