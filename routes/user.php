@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\User\FollowerController;
 use App\Http\Controllers\User\FollowController;
+use App\Http\Controllers\User\FollowerController;
 use App\Http\Controllers\User\FollowingController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserImageController;
 use Illuminate\Support\Facades\Route;
 
 //actions that need authentication
@@ -11,6 +12,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('users')->name('users.')->group(function () {
         //update the authenticated user's profile
         Route::patch('', [UserController::class, 'update'])->name('update');
+        //add avatar
+        Route::post('image', [UserImageController::class, 'store'])->name('image.store');
         //work with a specific profile
         Route::prefix('{user}')->group(function () {
             //work with follow feature
