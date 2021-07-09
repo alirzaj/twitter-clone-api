@@ -84,7 +84,7 @@ class FollowTest extends TestCase
     }
 
     /** @test */
-    public function users_can_see_a_list_of_a_users_foloowers()
+    public function users_can_see_a_list_of_a_users_followers()
     {
         //create a user with 16 followers
         $user1 = User::factory()
@@ -96,7 +96,7 @@ class FollowTest extends TestCase
         //& 2 followers of user1's followers to assert follows attribute
         $user2 = User::factory()
             ->has(User::factory()->state(['followings_count' => 1]), 'followers')
-            ->create(['followers_count' => 3,'followings_count' => 2]);
+            ->create(['followers_count' => 3, 'followings_count' => 2]);
 
         $user2->followings()->attach([$user1->followers[0]->id, $user1->followers[3]->id]);
         $user2->followers()->attach([$user1->followers[4]->id, $user1->followers[15]->id]);
@@ -179,9 +179,86 @@ class FollowTest extends TestCase
         $this->postJson(route('users.follow.store', ['user' => $user1->username]))
             ->assertStatus(422);
 
-        $this->assertDatabaseMissing('follows',[
+        $this->assertDatabaseMissing('follows', [
             'follower_id' => $user1->id,
             'following_id' => $user1->id,
         ]);
+    }
+
+    /** @test */
+    public function users_can_see_a_list_of_another_users_followings()
+    {
+        $user1 = User::factory()
+            ->has(User::factory()->state(['followers_count' => 1])->count(16), 'followings')
+            ->create(['followings_count' => 16]);
+
+        $user2 = User::factory()->create(['followers_count' => 2, 'followings_count' => 2]);
+
+        $user2->followings()->attach([$user1->followings[0]->id, $user1->followings[3]->id]);
+        $user2->followers()->attach([$user1->followings[1]->id, $user1->followings[2]->id]);
+
+        Sanctum::actingAs($user2);
+
+        $response = $this->getJson(route('users.followings.index', ['user' => $user1->username]))
+            ->assertOk()
+            ->assertJson([
+                'data' => [
+                    [
+                        'name' => $user1->followings[0]->name,
+                        'username' => $user1->followings[0]->username,
+                        'bio' => $user1->followings[0]->bio,
+                        'avatar' => $user1->followings[0]->avatar,
+                        'following' => true,
+                        'follows' => false,
+                    ],
+                    [
+                        'name' => $user1->followings[1]->name,
+                        'username' => $user1->followings[1]->username,
+                        'bio' => $user1->followings[1]->bio,
+                        'avatar' => $user1->followings[1]->avatar,
+                        'following' => false,
+                        'follows' => true,
+                    ],
+                    [
+                        'name' => $user1->followings[2]->name,
+                        'username' => $user1->followings[2]->username,
+                        'bio' => $user1->followings[2]->bio,
+                        'avatar' => $user1->followings[2]->avatar,
+                        'following' => false,
+                        'follows' => true,
+                    ],
+                    [
+                        'name' => $user1->followings[3]->name,
+                        'username' => $user1->followings[3]->username,
+                        'bio' => $user1->followings[3]->bio,
+                        'avatar' => $user1->followings[3]->avatar,
+                        'following' => true,
+                        'follows' => false,
+                    ],
+                    [
+                        'name' => $user1->followings[4]->name,
+                        'username' => $user1->followings[4]->username,
+                        'bio' => $user1->followings[4]->bio,
+                        'avatar' => $user1->followings[4]->avatar,
+                        'following' => false,
+                        'follows' => false,
+                    ],
+                ]
+            ])->decodeResponseJson();
+
+        $this->getJson($response['links']['next'])
+            ->assertOk()
+            ->assertJson([
+                'data' => [
+                    [
+                        'name' => $user1->followings[15]->name,
+                        'username' => $user1->followings[15]->username,
+                        'bio' => $user1->followings[15]->bio,
+                        'avatar' => $user1->followings[15]->avatar,
+                        'following' => false,
+                        'follows' => false,
+                    ]
+                ]
+            ]);
     }
 }

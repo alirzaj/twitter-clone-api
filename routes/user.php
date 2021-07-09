@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Profile\FollowerController;
+use App\Http\Controllers\User\FollowerController;
 use App\Http\Controllers\User\FollowController;
+use App\Http\Controllers\User\FollowingController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
             });
             //see list of a user's followers
             Route::get('followers', [FollowerController::class, 'index'])->name('followers.index');
+            //see list of a user's followings
+            Route::get('followings', [FollowingController::class, 'index'])->name('followings.index');
         });
     });
 });

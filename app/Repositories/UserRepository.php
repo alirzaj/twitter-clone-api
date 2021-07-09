@@ -24,4 +24,21 @@ class UserRepository
             ->where('follows.following_id', $user->id)
             ->cursorPaginate();
     }
+
+    /**
+     * @param User $user
+     * @return CursorPaginator
+     */
+    public function followings(User $user): CursorPaginator
+    {
+        return User::query()
+            ->select(['users.id', 'users.name', 'users.username', 'users.bio', 'users.avatar'])
+            ->withFollowingState(auth()->user())
+            ->withFollowState(auth()->user())
+            ->join('follows', function (JoinClause $join) {
+                $join->on('follows.following_id', '=', 'users.id');
+            })
+            ->where('follows.follower_id', $user->id)
+            ->cursorPaginate();
+    }
 }
