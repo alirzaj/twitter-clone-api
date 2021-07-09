@@ -26,7 +26,7 @@ class UserImageTest extends TestCase
 
         $file = UploadedFile::fake()->image('test-avatar.jpg');
 
-        $this->postJson(route('users.image.store'), ['image' => $file, 'collection' => 'avatar'])
+        $this->postJson(route('users.images.store'), ['image' => $file, 'collection' => 'avatar'])
             ->assertNoContent();
 
         $this->assertDatabaseHas('media', [
@@ -40,7 +40,7 @@ class UserImageTest extends TestCase
 
         $file = UploadedFile::fake()->image('test-wall.jpg');
 
-        $this->postJson(route('users.image.store'), ['image' => $file, 'collection' => 'wall'])
+        $this->postJson(route('users.images.store'), ['image' => $file, 'collection' => 'wall'])
             ->assertNoContent();
 
 
@@ -61,14 +61,14 @@ class UserImageTest extends TestCase
 
         $file = UploadedFile::fake()->image('test-avatar.jpg');
         $this->postJson(
-            route('users.image.store'),
+            route('users.images.store'),
             ['image' => $file, 'collection' => $collection = $this->faker->randomElement(['avatar', 'wall'])]
         )->assertNoContent();
 
         $this->assertDatabaseCount('media', 1);
 
         $file = UploadedFile::fake()->image('test-avatar.jpg');
-        $this->postJson(route('users.image.store'), ['image' => $file, 'collection' => $collection])
+        $this->postJson(route('users.images.store'), ['image' => $file, 'collection' => $collection])
             ->assertNoContent();
 
         $this->assertDatabaseCount('media', 1);
