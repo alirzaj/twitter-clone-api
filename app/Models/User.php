@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +48,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'phone_verified_at' => 'datetime',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('wall')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png'])
+            ->singleFile();
+
+        $this->addMediaCollection('avatar')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png'])
+            ->singleFile()
+            ->registerMediaConversions(function (Media $media = null){
+                $this->addMediaConversion('thumb')
+                    ->height(48)
+                    ->width(48);
+            });
+    }
 
     public function followers(): BelongsToMany
     {
@@ -81,7 +100,7 @@ class User extends Authenticatable
     public function scopeWithFollowingState(Builder $query, User $user): Builder
     {
         return $query->selectRaw(
-    '(
+            '(
                 select exists(
                     select * from follows where following_id = users.id AND follower_id = ?
                 )
@@ -101,7 +120,7 @@ class User extends Authenticatable
     public function scopeWithFollowState(Builder $query, User $user): Builder
     {
         return $query->selectRaw(
-    '(
+            '(
                 select exists(
                  select * from follows where following_id = ? AND follower_id = users.id
                 )
