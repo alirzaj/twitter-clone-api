@@ -12,8 +12,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('users')->name('users.')->group(function () {
         //update the authenticated user's profile
         Route::patch('', [UserController::class, 'update'])->name('update');
-        //add avatar
-        Route::post('image', [UserImageController::class, 'store'])->name('image.store');
+        //work with images
+        Route::prefix('images')->name('images.')->group(function () {
+            //add avatar or wall
+            Route::post('', [UserImageController::class, 'store'])->name('store');
+            //remove avatar or wall
+            Route::delete('', [UserImageController::class, 'destroy'])->name('destroy');
+        });
         //work with a specific profile
         Route::prefix('{user}')->group(function () {
             //work with follow feature
