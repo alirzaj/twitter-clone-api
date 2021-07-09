@@ -27,8 +27,6 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('followers_count')->default(0);
             $table->unsignedBigInteger('followings_count')->default(0);
             $table->date('birthday')->nullable();
-            $table->string('avatar')->nullable();
-            $table->string('wall')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
