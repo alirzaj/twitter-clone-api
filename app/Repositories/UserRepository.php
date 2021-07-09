@@ -15,7 +15,7 @@ class UserRepository
     public function followers(User $user): CursorPaginator
     {
         return User::query()
-            ->select(['users.id', 'users.name', 'users.username', 'users.bio', 'users.avatar'])
+            ->select(['users.id', 'users.name', 'users.username', 'users.bio'])
             ->with(['media' => function ($query) {
                 $query->where('collection_name', 'avatar');
             }])
@@ -35,7 +35,7 @@ class UserRepository
     public function followings(User $user): CursorPaginator
     {
         return User::query()
-            ->select(['users.id', 'users.name', 'users.username', 'users.bio', 'users.avatar'])
+            ->select(['users.id', 'users.name', 'users.username', 'users.bio'])
             ->with(['media' => function ($query) {
                 $query->where('collection_name', 'avatar');
             }])
