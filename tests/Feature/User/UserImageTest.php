@@ -73,4 +73,33 @@ class UserImageTest extends TestCase
 
         $this->assertDatabaseCount('media', 1);
     }
+
+    /** @test */
+    public function users_can_delete_their_avatar_or_wall()
+    {
+        $user = User::factory()->create();
+
+        $user->addMedia(UploadedFile::fake()->image('test-avatar.jpg'))->toMediaCollection('avatar');
+        $user->addMedia(UploadedFile::fake()->image('test-wall.jpg'))->toMediaCollection('wall');
+
+        Sanctum::actingAs($user);
+
+        $this->deleteJson(route('users.images.destroy'), ['collection' => 'avatar'])
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('media',[
+            'model_type' => User::class,
+            'model_id' => $user->id,
+            'collection_name' => 'avatar',
+        ]);
+
+        $this->deleteJson(route('users.images.destroy'), ['collection' => 'wall'])
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('media',[
+            'model_type' => User::class,
+            'model_id' => $user->id,
+            'collection_name' => 'wall',
+        ]);
+    }
 }
