@@ -74,7 +74,6 @@ class UnfollowTest extends TestCase
         Sanctum::actingAs($user1);
 
         $this->deleteJson(route('users.follow.destroy', ['user' => $user2->username]))
-            ->dump()
             ->assertNoContent();
 
         $this->assertEquals(0, $user1->fresh()->followings_count);
