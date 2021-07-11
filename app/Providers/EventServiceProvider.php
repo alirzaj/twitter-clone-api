@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\Tweet\TweetReplied;
 use App\Events\User\UserFollowed;
 use App\Events\User\UserUnfollowed;
+use App\Listeners\Tweet\IncrementTweetReplyCount;
 use App\Listeners\User\IncrementFollowingUserFollowersCount;
 use App\Listeners\User\IncrementFollowerUserFollowingsCount;
 use App\Listeners\User\DecrementUnfollowedUserFollowersCount;
@@ -31,7 +33,10 @@ class EventServiceProvider extends ServiceProvider
         UserUnfollowed::class => [
             DecrementUnfollowerUserFollowingsCount::class,
             DecrementUnfollowedUserFollowersCount::class,
-        ]
+        ],
+        TweetReplied::class => [
+            IncrementTweetReplyCount::class,
+        ],
     ];
 
     /**
