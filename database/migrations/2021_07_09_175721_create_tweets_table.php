@@ -20,9 +20,15 @@ class CreateTweetsTable extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->text('text');
+            $table->foreignId('parent_tweet_id')
+                ->nullable()
+                ->constrained('tweets')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->unsignedBigInteger('likes')->default(0);
             $table->unsignedBigInteger('impressions')->default(0);
             $table->unsignedBigInteger('retweets')->default(0);
+            $table->unsignedBigInteger('replies')->default(0);
             $table->timestamps();
         });
     }
