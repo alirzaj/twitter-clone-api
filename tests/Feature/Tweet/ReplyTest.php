@@ -37,4 +37,28 @@ class ReplyTest extends TestCase
             'replies' => 1
         ]);
     }
+
+    /** @test */
+    public function users_cant_reply_a_tweet_that_does_not_exist()
+    {
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $this->postJson(
+            route('tweets.replies.store', ['tweet' => $this->faker->randomNumber()]),
+            ['text' => $this->faker->text(60_000)]
+        )->assertNotFound();
+    }
+
+    /** @test */
+    public function guests_can_not_reply_a_tweet()
+    {
+        $tweet = Tweet::factory()->create();
+
+        $this->postJson(
+            route('tweets.replies.store', ['tweet' => $tweet->id]),
+            ['text' => $this->faker->text(60_000)]
+        )->assertUnauthorized();
+    }
 }
