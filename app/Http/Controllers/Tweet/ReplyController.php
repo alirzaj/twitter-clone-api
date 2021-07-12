@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Twet;
+namespace App\Http\Controllers\Tweet;
 
 use App\Events\Tweet\TweetReplied;
 use App\Http\Controllers\Controller;

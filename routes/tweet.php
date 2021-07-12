@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Tweet\TweetController;
-use App\Http\Controllers\Twet\ReplyController;
+use App\Http\Controllers\Tweet\ReplyController;
 use Illuminate\Support\Facades\Route;
 
 //work with tweets
