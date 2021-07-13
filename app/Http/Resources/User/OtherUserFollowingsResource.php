@@ -18,7 +18,7 @@ class OtherUserFollowingsResource extends JsonResource
             'name' => $this->name,
             'username' => $this->username,
             'bio' => $this->bio,
-            'avatar' => $this->getFirstMedia('avatar')?->getUrl('thumb'),
+            'avatar' => $this->avatar_thumbnail,
             'following' => $this->following,
             'follows' => $this->follows,
         ];

@@ -67,6 +67,11 @@ class User extends Authenticatable implements HasMedia
             });
     }
 
+    public function getAvatarThumbnailAttribute(): string|null
+    {
+        return $this->getFirstMedia('avatar')?->getUrl('thumb');
+    }
+
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(
