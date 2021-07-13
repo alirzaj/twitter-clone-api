@@ -26,7 +26,7 @@ class CreateTweetsTable extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->unsignedBigInteger('likes')->default(0);
-            $table->unsignedBigInteger('impressions')->default(0);
+            $table->unsignedBigInteger('impressions_count')->default(0);
             $table->unsignedBigInteger('retweets')->default(0);
             $table->unsignedBigInteger('replies')->default(0);
             $table->timestamps();
