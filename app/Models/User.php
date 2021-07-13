@@ -108,7 +108,9 @@ class User extends Authenticatable implements HasMedia
 
     public function retweets(): BelongsToMany
     {
-        return $this->belongsToMany(Tweet::class, 'retweets');
+        return $this
+            ->belongsToMany(Tweet::class, 'retweets')
+            ->withPivot('retweeted_at');
     }
 
     /**
