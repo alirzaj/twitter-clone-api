@@ -22,6 +22,9 @@ class CreateRetweetsTable extends Migration
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->timestamp('retweeted_at')->useCurrent();
+
+            $table->primary(['tweet_id', 'user_id']);
         });
     }
 
