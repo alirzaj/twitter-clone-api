@@ -32,4 +32,16 @@ class Tweet extends Model
     {
         return $this->belongsTo(Tweet::class, 'parent_tweet_id', 'id');
     }
+
+    public function impressions(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(
+                User::class,
+                'impressions',
+                'tweet_id',
+                'user_id',
+            )
+            ->withPivot(['ip', 'agent', 'visited_at']);
+    }
 }

@@ -150,4 +150,16 @@ class User extends Authenticatable implements HasMedia
             [$user->id]
         );
     }
+
+    public function impressions()
+    {
+        return $this
+            ->belongsToMany(
+                Tweet::class,
+                'impressions',
+                'user_id',
+                'tweet_id',
+            )
+            ->withPivot(['ip', 'agent', 'visited_at']);
+    }
 }
