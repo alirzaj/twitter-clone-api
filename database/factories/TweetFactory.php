@@ -27,8 +27,8 @@ class TweetFactory extends Factory
             'text' => $this->faker->text(500),
             'likes' => $this->faker->randomNumber(),
             'impressions_count' => $this->faker->randomNumber(),
-            'retweets' => $this->faker->randomNumber(),
-            'replies' => $this->faker->randomNumber(),
+            'retweets_count' => $this->faker->randomNumber(),
+            'replies_count' => $this->faker->randomNumber(),
             'created_at' => $this->faker->dateTime,
             'updated_at' => $this->faker->dateTime,
         ];

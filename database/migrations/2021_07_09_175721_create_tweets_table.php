@@ -27,8 +27,8 @@ class CreateTweetsTable extends Migration
                 ->cascadeOnUpdate();
             $table->unsignedBigInteger('likes')->default(0);
             $table->unsignedBigInteger('impressions_count')->default(0);
-            $table->unsignedBigInteger('retweets')->default(0);
-            $table->unsignedBigInteger('replies')->default(0);
+            $table->unsignedBigInteger('retweets_count')->default(0);
+            $table->unsignedBigInteger('replies_count')->default(0);
             $table->timestamps();
         });
     }

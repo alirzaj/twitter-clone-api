@@ -18,9 +18,9 @@ class ShowTweetResource extends JsonResource
             'id' => $this->id,
             'text' => $this->text,
             'likes' => $this->likes,
-            'impressions' => $this->impressions,
-            'retweets' => $this->retweets,
-            'replies' => $this->replies,
+            'impressions_count' => $this->impressions_count,
+            'retweets_count' => $this->retweets_count,
+            'replies_count' => $this->replies_count,
             'user' => $this->whenLoaded('user', function () {
                 return new ShowTweetUserResource($this->user);
             }),
