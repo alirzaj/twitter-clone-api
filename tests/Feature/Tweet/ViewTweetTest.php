@@ -27,9 +27,9 @@ class ViewTweetTest extends TestCase
                     'id' => $tweet->id,
                     'text' => $tweet->text,
                     'likes' => $tweet->likes,
-                    'impressions' => $tweet->impressions,
-                    'retweets' => $tweet->retweets,
-                    'replies' => $tweet->replies,
+                    'impressions_count' => $tweet->impressions_count + 1,
+                    'retweets_count' => $tweet->retweets_count,
+                    'replies_count' => $tweet->replies_count,
                     'user' => [
                         'name' => $tweet->user->name,
                         'username' => $tweet->user->username,
