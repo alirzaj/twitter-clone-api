@@ -86,4 +86,13 @@ class ViewTweetTest extends TestCase
             'impressions_count' => $tweet->impressions_count + 1,
         ]);
     }
+
+    /** @test */
+    public function guests_can_not_see_a_tweet()
+    {
+        $tweet = Tweet::factory()->create();
+
+        $this->getJson(route('tweets.show', ['tweet' => $tweet->id]))
+            ->assertUnauthorized();
+    }
 }
