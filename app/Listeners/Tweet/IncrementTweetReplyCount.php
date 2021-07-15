@@ -14,6 +14,6 @@ class IncrementTweetReplyCount
      */
     public function handle(TweetReplied $event)
     {
-        $event->tweet->increment('replies');
+        $event->tweet->increment('replies_count');
     }
 }
