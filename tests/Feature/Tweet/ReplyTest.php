@@ -34,7 +34,7 @@ class ReplyTest extends TestCase
 
         $this->assertDatabaseHas('tweets', [
             'id' => $tweet->id,
-            'replies' => 1
+            'replies_count' => $tweet->replies_count + 1
         ]);
     }
 
