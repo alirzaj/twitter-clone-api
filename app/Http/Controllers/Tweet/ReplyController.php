@@ -13,7 +13,7 @@ class ReplyController extends Controller
     {
         $tweet = Tweet::query()->findOrFail($tweet, ['id']);
 
-        $tweet->reply()->create($request->validated() + ['user_id' => auth()->id()]);
+        $tweet->replies()->create($request->validated() + ['user_id' => auth()->id()]);
 
         TweetReplied::dispatch($tweet, auth()->user());
 

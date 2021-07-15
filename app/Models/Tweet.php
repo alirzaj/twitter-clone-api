@@ -24,7 +24,7 @@ class Tweet extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function reply(): HasMany
+    public function replies(): HasMany
     {
         return $this->hasMany(Tweet::class, 'parent_tweet_id', 'id');
     }
