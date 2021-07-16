@@ -15,7 +15,7 @@ Route::prefix('tweets')->middleware('auth:sanctum')->name('tweets.')->group(func
         Route::get('', [TweetController::class, 'show'])->name('show');
         //work with replies
         Route::prefix('replies')->name('replies.')->group(function () {
-            //retweet a tweet
+            //reply a tweet
             Route::post('', [ReplyController::class, 'store'])->name('store');
         });
         //work with retweets
