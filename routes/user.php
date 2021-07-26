@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\User\FollowController;
-use App\Http\Controllers\User\FollowerController;
-use App\Http\Controllers\User\FollowingController;
+use App\Http\Controllers\Follow\FollowController;
+use App\Http\Controllers\Follow\FollowerController;
+use App\Http\Controllers\Follow\FollowingController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserImageController;
 use Illuminate\Support\Facades\Route;

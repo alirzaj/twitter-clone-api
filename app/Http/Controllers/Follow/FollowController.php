@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Follow;
 
 use App\Events\User\UserFollowed;
 use App\Events\User\UserUnfollowed;
