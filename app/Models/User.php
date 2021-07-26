@@ -98,7 +98,15 @@ class User extends Authenticatable implements HasMedia
 
     public function tweets(): HasMany
     {
-        return $this->hasMany(Tweet::class, 'user_id', 'id');
+        return $this->hasMany(Tweet::class, 'user_id', 'id')
+            ->whereNull('parent_tweet_id');
+    }
+
+    public function replies(): HasMany
+    {
+        return $this
+            ->hasMany(Tweet::class, 'user_id', 'id')
+            ->whereNotNull('parent_tweet_id');
     }
 
     public function pinnedTweet(): BelongsTo
