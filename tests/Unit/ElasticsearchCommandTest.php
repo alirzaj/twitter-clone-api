@@ -53,3 +53,7 @@ it('can delete a specific index', function () {
             ->getMapping(['index' => $index->name]);
     });
 })->throws(Missing404Exception::class);
+
+it('will recreate index when it exists and we want to create it', function () {
+    //todo how to test it?
+});
