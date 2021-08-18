@@ -24,10 +24,6 @@ class Tweets
         'parent_tweet_id' => 'keyword',
         'user_ip' => 'ip',
         'created_at' => 'date',
-        'likes_count' => 'unsigned_long',
-        'impressions_count' => 'unsigned_long',
-        'retweets_count' => 'unsigned_long',
-        'replies_count' => 'unsigned_long',
     ];
 
     /**
@@ -45,10 +41,6 @@ class Tweets
            'parent_tweet_id' => $model->parent_tweet_id,
            'user_ip' => request()->ip(),
            'created_at' => $model->created_at,
-           'likes_count' => $model->likes_count,
-           'impressions_count' => $model->impressions_count,
-           'retweets_count' => $model->retweets_count,
-           'replies_count' => $model->replies_count,
        ]);
     }
 }
