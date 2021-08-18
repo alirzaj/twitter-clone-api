@@ -3,7 +3,9 @@
 namespace App\Elasticsearch\Commands;
 
 use Elasticsearch\Client;
+use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
 class CreateIndex extends Command
 {
@@ -47,18 +49,31 @@ class CreateIndex extends Command
         $this->indexes()->each(function ($index) {
             $this->info("creating $index->name");
 
-            $this->client->indices()->create([
-                'index' => $index->name,
-                'body' => [
-                    'mappings' => [
-                        'properties' => array_map(fn($type) => ['type' => $type], $index->properties)
-                    ]
-                ]
-            ]);
+            try {
+                $this->createIndex($index);
+            } catch (BadRequest400Exception) {
+                $this->alert("$index->name already exists. deleting it...");
+
+                Artisan::call('elastic:delete-index', ['name' => $index->name]);
+
+                $this->createIndex($index);
+            }
 
             $this->info("created $index->name");
         });
 
         return 0;
+    }
+
+    private function createIndex($index): void
+    {
+        $this->client->indices()->create([
+            'index' => $index->name,
+            'body' => [
+                'mappings' => [
+                    'properties' => array_map(fn($type) => ['type' => $type], $index->properties)
+                ]
+            ]
+        ]);
     }
 }
