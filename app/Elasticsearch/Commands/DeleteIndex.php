@@ -14,7 +14,7 @@ class DeleteIndex extends Command
      *
      * @var string
      */
-    protected $signature = 'elastic:delete-index';
+    protected $signature = 'elastic:delete-index {name?}';
 
     /**
      * The console command description.
@@ -44,10 +44,17 @@ class DeleteIndex extends Command
      */
     public function handle()
     {
-        $this->indexes()->each(
-            fn($index) => $this->client->indices()->delete(['index' => $index->name])
-        );
+        $this->hasOption('name') ?
+            $this->deleteIndex($this->option('name')) :
+            $this->indexes()->each(fn($index) => $this->deleteIndex($index->name));
 
         return 0;
+    }
+
+    private function deleteIndex(string $name): void
+    {
+        $this->client->indices()->delete(['index' => $name]);
+
+        $this->info("$name deleted");
     }
 }
