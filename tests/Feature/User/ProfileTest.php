@@ -47,4 +47,4 @@ test('users can see another users list of tweets', function () {
             ]
         ]);
     });
-})->group('t');
+});
