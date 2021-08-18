@@ -15,7 +15,6 @@ trait InteractsWithElasticsearch
 
         expect($this->client()->get(['index' => $indexName,'id' => $document['id']])['_source'])
         ->toMatchArray(array_filter($document));
-
     }
 
     private function client(): Client
