@@ -25,7 +25,7 @@ class CreateTweetsTable extends Migration
                 ->constrained('tweets')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->unsignedBigInteger('likes')->default(0);
+            $table->unsignedBigInteger('likes_count')->default(0);
             $table->unsignedBigInteger('impressions_count')->default(0);
             $table->unsignedBigInteger('retweets_count')->default(0);
             $table->unsignedBigInteger('replies_count')->default(0);

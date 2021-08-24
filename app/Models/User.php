@@ -121,6 +121,11 @@ class User extends Authenticatable implements HasMedia
             ->withPivot('retweeted_at');
     }
 
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(Tweet::class, 'likes');
+    }
+
     /**
      * add a column to query indicating that the given user is
      * following the current user in row or not

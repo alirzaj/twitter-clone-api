@@ -21,7 +21,7 @@ class Tweet extends Model
      *
      * @var string[]|bool
      */
-    protected $guarded = ['id', 'likes', 'impressions_count', 'retweets_count', 'replies_count'];
+    protected $guarded = ['id', 'likes_count', 'impressions_count', 'retweets_count', 'replies_count'];
 
     public function user(): BelongsTo
     {
@@ -55,5 +55,10 @@ class Tweet extends Model
         return $this
             ->belongsToMany(User::class, 'retweets')
             ->withPivot(['retweeted_at']);
+    }
+
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'likes');
     }
 }

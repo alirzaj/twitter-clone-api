@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Like\LikeTweetController;
 use App\Http\Controllers\Tweet\ReplyController;
 use App\Http\Controllers\Tweet\RetweetController;
 use App\Http\Controllers\Tweet\TweetController;
@@ -21,7 +22,14 @@ Route::prefix('tweets')->middleware('auth:sanctum')->name('tweets.')->group(func
         //work with retweets
         Route::prefix('retweets')->name('retweets.')->group(function () {
             //retweet a tweet
-            Route::post('',[RetweetController::class, 'store'])->name('store');
+            Route::post('', [RetweetController::class, 'store'])->name('store');
+        });
+        //work with a tweet's likes
+        Route::prefix('likes')->name('likes.')->group(function () {
+            //like a tweet
+            Route::post('', [LikeTweetController::class, 'store'])->name('store');
+            //take like back from a tweet
+            Route::delete('', [LikeTweetController::class, 'destroy'])->name('destroy');
         });
     });
 });

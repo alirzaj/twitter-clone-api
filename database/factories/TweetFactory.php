@@ -25,7 +25,7 @@ class TweetFactory extends Factory
         return [
             'user_id' => User::factory(),
             'text' => $this->faker->text(500),
-            'likes' => $this->faker->randomNumber(),
+            'likes_count' => $this->faker->randomNumber(),
             'impressions_count' => $this->faker->randomNumber(),
             'retweets_count' => $this->faker->randomNumber(),
             'replies_count' => $this->faker->randomNumber(),

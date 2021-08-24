@@ -3,10 +3,14 @@
 namespace App\Providers;
 
 use App\Events\Tweet\Retweeted;
+use App\Events\Tweet\TweetLiked;
+use App\Events\Tweet\TweetLikeRevoked;
 use App\Events\Tweet\TweetReplied;
 use App\Events\Tweet\TweetVisited;
 use App\Events\User\UserFollowed;
 use App\Events\User\UserUnfollowed;
+use App\Listeners\Tweet\DecrementLikesCount;
+use App\Listeners\Tweet\IncrementLikesCount;
 use App\Listeners\Tweet\IncrementRetweetsCount;
 use App\Listeners\Tweet\IncrementTweetImpressionsCount;
 use App\Listeners\Tweet\IncrementTweetReplyCount;
@@ -48,6 +52,14 @@ class EventServiceProvider extends ServiceProvider
         ],
         Retweeted::class => [
             IncrementRetweetsCount::class,
+        ],
+
+        TweetLiked::class => [
+            IncrementLikesCount::class,
+        ],
+
+        TweetLikeRevoked::class => [
+            DecrementLikesCount::class
         ]
     ];
 
