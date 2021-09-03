@@ -25,7 +25,6 @@ class HomeResource extends JsonResource
             'retweets_count' => $this->retweets_count,
             'replies_count' => $this->replies_count,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }
