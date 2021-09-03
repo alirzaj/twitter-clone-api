@@ -11,6 +11,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+        //TODO user avatar n+1? eagerload?
         return HomeResource::collection(
             Tweet::query()
                 ->with('user:id,name,username')
