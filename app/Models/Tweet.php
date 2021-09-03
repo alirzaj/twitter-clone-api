@@ -14,8 +14,6 @@ class Tweet extends Model
 {
     use HasFactory, Searchable;
 
-    public string $index = Tweets::class;
-
     /**
      * The attributes that aren't mass assignable.
      *
