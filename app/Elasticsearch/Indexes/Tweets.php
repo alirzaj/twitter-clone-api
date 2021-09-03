@@ -40,6 +40,9 @@ class Tweets
            'user_id' => $model->user_id,
            'parent_tweet_id' => $model->parent_tweet_id,
            'user_ip' => request()->ip(),
+           'likes_count' => $model->likes_count,
+           'retweets_count' => $model->retweets_count,
+           'replies_count' =>$model->replies_count,
            'created_at' => $model->created_at,
        ]);
     }
