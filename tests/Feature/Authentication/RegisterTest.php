@@ -24,7 +24,7 @@ class RegisterTest extends TestCase
             'name' => $this->faker->name(),
             'username' => $this->faker->userName(),
             'email' => $this->faker->email(),
-            'password' => $password = Str::random() . Str::upper($this->faker->randomLetter()),
+            'password' => $password = Str::random() . Str::upper($this->faker->randomLetter()) . $this->faker->randomNumber(),
             'password_confirmation' => $password,
         ];
 
