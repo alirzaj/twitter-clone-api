@@ -14,16 +14,29 @@ test('when users search for sth they will get relevant results', function () {
 
     Sanctum::actingAs($user);
 
-    $this->getJson(route('search.show', ['q' => 'ital', 'type' => 'tweet']))
+    $this->getJson(route('search.show', ['q' => 'italy', 'type' => 'tweet']))
         ->assertOk()
         ->assertJson([
-            'data' => [
+            'users' => [],
+            'tweets' => [
                 [
-                    'id' => $tweet1->id
+                    'id' => $tweet1->id,
+                    'text' => $tweet1->text,
+                    'user' => [
+                        'name' => $tweet1->user->name,
+                        'username' => $tweet1->user->username,
+                        'avatar' => null,
+                    ]
                 ],
                 [
-                    'id' => $tweet2->id
+                    'id' => $tweet3->id,
+                    'text' => $tweet3->text,
+                    'user' => [
+                        'name' => $tweet3->user->name,
+                        'username' => $tweet3->user->username,
+                        'avatar' => null,
+                    ]
                 ]
-            ]
+            ],
         ]);
 });
