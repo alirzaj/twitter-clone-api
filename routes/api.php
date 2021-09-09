@@ -11,6 +11,11 @@ require 'tweet.php';
 Route::middleware('auth:sanctum')->group(function () {
     //see the authenticated user's home (feed)
     Route::get('home', [HomeController::class, 'index'])->name('home.index');
-    //search sth
-    Route::get('search', [SearchController::class, 'show'])->name('search.show');
+    //work with search feature
+    Route::prefix('search')->name('search.')->group(function () {
+        //search sth (basic)
+        Route::get('', [SearchController::class, 'show'])->name('show');
+        //see tweets of a hashtag
+        Route::get('tags', [SearchController::class, 'hashtag'])->name('tags.show');
+    });
 });
