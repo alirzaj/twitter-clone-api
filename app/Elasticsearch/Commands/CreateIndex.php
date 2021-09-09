@@ -70,8 +70,19 @@ class CreateIndex extends Command
         $this->client->indices()->create([
             'index' => $index->name,
             'body' => [
+                'settings' => [
+                    'analysis' => [
+                        'analyzer' => $index->analyzers ?? [],
+                        'tokenizer' => $index->tokenizers ?? []
+                    ]
+                ],
                 'mappings' => [
-                    'properties' => array_map(fn($type) => ['type' => $type], $index->properties)
+                    'properties' => collect($index->properties)->map(
+                        fn(string $type, string $name) => [
+                            'type' => $type,
+                            'fields' => $index->fields[$name] ?? []
+                        ]
+                    )
                 ]
             ]
         ]);
