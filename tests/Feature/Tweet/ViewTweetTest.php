@@ -36,7 +36,7 @@ class ViewTweetTest extends TestCase
                     ]
                 ]
             ])
-            ->assertJsonStructure(['data' => ['user' => ['avatar'], 'created_at', 'updated_at']]);
+            ->assertJsonStructure(['data' => ['user' => ['avatar'], 'created_at']]);
     }
 
     /** @test */

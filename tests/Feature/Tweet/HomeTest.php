@@ -85,7 +85,6 @@ class HomeTest extends TestCase
                             'retweets_count' => $tweet['retweets_count'],
                             'replies_count' => $tweet['replies_count'],
                             'created_at' => $tweet['created_at'],
-                            'updated_at' => $tweet['updated_at'],
                         ]
                     ]
                 ])
